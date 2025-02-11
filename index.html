@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(45deg, #1a001a, #000428);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            text-align: center;
+        }
+
+        .message-container {
+            position: relative;
+            margin-bottom: 30px;
+            perspective: 1000px;
+        }
+
+        .message {
+            font-size: 4.5em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #ffd700, #4ecdc4, #ff69b4, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 4px 8px rgba(0,0,0,0.3);
+            animation: colorShift 5s infinite linear;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.3));
+            position: relative;
+        }
+
+        @keyframes colorShift {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(30deg); }
+        }
+
+        .cake {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin: 50px auto;
+        }
+
+        .plate {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 480px;
+            height: 60px;
+            background: radial-gradient(ellipse at center, #ffffff 0%, #f0f0f0 60%, #e0e0e0 100%);
+            border-radius: 50%;
+            box-shadow: 
+                0 10px 30px rgba(0,0,0,0.3),
+                inset 0 -5px 15px rgba(0,0,0,0.1);
+        }
+
+        .cake-layer {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .cake-bottom {
+            bottom: 30px;
+            width: 380px;
+            height: 120px;
+            background: linear-gradient(145deg, #ff69b4, #ff1493);
+        }
+
+        .cake-middle {
+            bottom: 150px;
+            width: 300px;
+            height: 100px;
+            background: linear-gradient(145deg, #9400d3, #8a2be2);
+        }
+
+        .cake-top {
+            bottom: 250px;
+            width: 220px;
+            height: 90px;
+            background: linear-gradient(145deg, #4169e1, #0000ff);
+        }
+
+        .cake-sprinkle {
+            position: absolute;
+            width: 4px;
+            height: 8px;
+            border-radius: 2px;
+            opacity: 0.8;
+        }
+
+        .frosting {
+            position: absolute;
+            width: 100%;
+            height: 30px;
+            top: -15px;
+            background: 
+                radial-gradient(circle at 25% 50%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 25%, transparent 26%),
+                radial-gradient(circle at 75% 50%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.9) 25%, transparent 26%);
+            background-size: 50px 30px;
+            border-radius: 10px;
+            animation: frostingShimmer 3s infinite linear;
+        }
+
+        @keyframes frostingShimmer {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+
+        .candles-container {
+            position: absolute;
+            bottom: 340px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .candle-group {
+            position: relative;
+        }
+
+        .candle {
+            width: 15px;
+            height: 45px;
+            background: linear-gradient(90deg, #ffd700, #ffa500, #ff8c00);
+            border-radius: 7px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .flame {
+            position: absolute;
+            bottom: 45px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 45px;
+            background: #ffd700;
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 
+                0 0 20px #ff6b6b,
+                0 0 40px #ff4757,
+                0 0 60px #ff7f50,
+                0 0 80px #ffd700;
+            animation: flameFlicker 0.5s infinite alternate;
+            cursor: pointer;
+            transform-origin: center bottom;
+        }
+
+        @keyframes flameFlicker {
+            0% {
+                transform: translateX(-50%) scale(1) rotate(-2deg);
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateX(-50%) scale(1.2) rotate(2deg);
+                opacity: 1;
+            }
+        }
+
+        .sprinkle {
+            position: absolute;
+            width: 4px;
+            height: 8px;
+            border-radius: 2px;
+            animation: sprinkleFall 3s linear forwards;
+        }
+
+        @keyframes sprinkleFall {
+            0% { 
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="message-container">
+            <h1 class="message">Blow out the candles, Mbull!</h1>
+        </div>
+        <div class="cake">
+            <div class="candles-container">
+                <div class="candle-group">
+                    <div class="flame" id="flame1"></div>
+                    <div class="candle"></div>
+                </div>
+                <div class="candle-group">
+                    <div class="flame" id="flame2"></div>
+                    <div class="candle"></div>
+                </div>
+                <div class="candle-group">
+                    <div class="flame" id="flame3"></div>
+                    <div class="candle"></div>
+                </div>
+            </div>
+            <div class="cake-layer cake-top">
+                <div class="frosting"></div>
+            </div>
+            <div class="cake-layer cake-middle">
+                <div class="frosting"></div>
+            </div>
+            <div class="cake-layer cake-bottom">
+                <div class="frosting"></div>
+            </div>
+            <div class="plate"></div>
+        </div>
+    </div>
+
+    <script>
+        const flames = [
+            document.getElementById('flame1'),
+            document.getElementById('flame2'),
+            document.getElementById('flame3')
+        ];
+
+        function createCakeSprinkles() {
+            const cakeLayers = [
+                document.querySelector('.cake-top'),
+                document.querySelector('.cake-middle'),
+                document.querySelector('.cake-bottom')
+            ];
+            const sprinkleColors = ['#ff69b4', '#ffd700', '#00bfff', '#ff4757', '#32cd32'];
+
+            cakeLayers.forEach(layer => {
+                for (let i = 0; i < 50; i++) {
+                    const sprinkle = document.createElement('div');
+                    sprinkle.className = 'cake-sprinkle';
+                    sprinkle.style.left = Math.random() * 100 + '%';
+                    sprinkle.style.top = Math.random() * 100 + '%';
+                    sprinkle.style.backgroundColor = sprinkleColors[Math.floor(Math.random() * sprinkleColors.length)];
+                    sprinkle.style.transform = `rotate(${Math.random() * 360}deg)`;
+                    layer.appendChild(sprinkle);
+                }
+            });
+        }
+
+        function createFallingSprinkles() {
+            const colors = ['#ff69b4', '#ffd700', '#00bfff', '#ff4757', '#32cd32'];
+            for (let i = 0; i < 300; i++) {
+                const sprinkle = document.createElement('div');
+                sprinkle.className = 'sprinkle';
+                sprinkle.style.left = Math.random() * 120 - 10 + 'vw';
+                sprinkle.style.top = Math.random() * 150 - 50 + 'vh';
+                sprinkle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                sprinkle.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(sprinkle);
+            }
+        }
+
+        createCakeSprinkles();
+
+        setTimeout(() => {
+            flames.forEach((flame, index) => {
+                setTimeout(() => {
+                    flame.style.animation = 'blowOut 0.5s forwards';
+                    flame.style.transform = 'translateX(-50%) scale(0)';
+                    flame.style.opacity = '0';
+                }, index * 300);
+            });
+
+            setTimeout(createFallingSprinkles, 1000);
+        }, 3000);
+
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes blowOut {
+                0% {
+                    transform: translateX(-50%) scale(1);
+                    opacity: 1;
+                }
+                100% {
+                    transform: translateX(-50%) scale(0);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
